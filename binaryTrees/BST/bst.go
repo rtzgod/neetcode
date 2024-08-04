@@ -31,3 +31,33 @@ func Insert(root *TreeNode, val int) *TreeNode {
 
 	return root
 }
+
+func Remove(root *TreeNode, val int) *TreeNode {
+	if root == nil {
+		return nil
+	}
+	if val > root.Val {
+		root.Right = Remove(root.Right, val)
+	} else if val < root.Val {
+		root.Left = Remove(root.Left, val)
+	} else {
+		if root.Left == nil {
+			return root.Right
+		} else if root.Right == nil {
+			return root.Left
+		} else {
+			minNode := minValueNode(root.Right)
+			root.Val = minNode.Val
+			root.Right = Remove(root.Right, minNode.Val)
+		}
+	}
+	return root
+}
+
+func minValueNode(root *TreeNode) *TreeNode {
+	curr := root
+	for curr != nil && curr.Left != nil {
+		curr = curr.Left
+	}
+	return curr
+}
